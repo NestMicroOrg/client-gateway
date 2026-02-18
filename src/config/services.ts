@@ -1,3 +1,5 @@
 
 
 export const PRODUCT_SERVICE = 'PRODUCTS_SERVICE';
+
+export const ORDER_SERVICE = 'ORDERS_SERVICE';
