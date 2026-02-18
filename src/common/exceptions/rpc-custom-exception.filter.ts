@@ -10,16 +10,21 @@ export class RpcCustomExceptionFilter implements ExceptionFilter {
 
         const rpcError = exception.getError();
 
-        if (typeof rpcError === 'object' && 'status' in rpcError && 'message' in rpcError) {
-            response.status(rpcError.status).json(rpcError);
-            return;
+        let status = 500;
+        let message = 'Internal server error';
+
+        if (typeof rpcError === 'object' && rpcError !== null) {
+            if ('status' in rpcError && Number.isInteger(rpcError.status)) {
+                status = rpcError.status as number;
+            }
+            if ('message' in rpcError) {
+                message = rpcError.message as string;
+            }
         }
 
-        response.status(401).json({
-            status: 401,
-            message: 'Unauthorized access - Invalid token or missing credentials',
-        })
-
+        response.status(status).json({
+            status,
+            message,
+        });
     }
-
 }
